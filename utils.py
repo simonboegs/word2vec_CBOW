@@ -1,6 +1,8 @@
+import torch
 from torchtext.datasets import WikiText2
 from torchtext.data.utils import get_tokenizer
 from torchtext.vocab import build_vocab_from_iterator
+from torchtext.data import to_map_style_dataset
 from torch.utils.data import DataLoader
 from params import DATASET, N_WORDS, MAX_PARAGRAPH_LEN, BATCH_SIZE, MIN_WORD_FREQ
 from functools import partial
@@ -15,7 +17,7 @@ def create_vocab(data_map):
         min_freq=MIN_WORD_FREQ
     )
     vocab.set_default_index(vocab["<unk>"])
-    torch.save(vocab, "vocab.pth"
+    torch.save(vocab, "saves/vocab.pth")
     return vocab
 
 def collate(batch, vocab):
@@ -25,7 +27,7 @@ def collate(batch, vocab):
         tokens = tokenizer(paragraph)
         token_ids = vocab(tokens)
         # skip paragraph if too small
-        if len(token_ids) < params.N_WORDS * 2 + 1:
+        if len(token_ids) < N_WORDS * 2 + 1:
             continue
         # cut off paragraph if too long
         elif len(token_ids) > MAX_PARAGRAPH_LEN:
@@ -43,7 +45,8 @@ def collate(batch, vocab):
 
 def create_data_maps(dataset: str):
     if dataset == "WikiText2":
-        train_data, test_data = WikiText2(root="data", download=True)
+        train_data = WikiText2(root="data", split="train")
+        test_data = WikiText2(root="data", split="test")
     else:
         raise ValueError("unknown dataset " + DATASET)
     train_data_map = to_map_style_dataset(train_data)
