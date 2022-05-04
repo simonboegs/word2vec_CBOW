@@ -4,10 +4,16 @@ from params import EMBED_DIMENSION, EMBED_MAX_NORM
 class CBOW_Model(nn.Module):
     def __init__(self, vocab_size: int):
         super(CBOW_Model, self).__init__()
+        self.embeddings = nn.Embedding(
+            num_embeddings=vocab_size,
+            embedding_dim=EMBED_DIMENSION,
+            max_norm=EMBED_MAX_NORM
+        )
+        self.linear = nn.Linear(
+            in_features=EMBED_DIMENSION,
+            out_features=vocab_size
+        )
     
-    def forward(self, inputs_):
-        pass
-
-#model = CBOW_Model((len(vocab))
-#where is len(vocab) going to come from??
-#actually i should probs not define that in this file
+    def forward(self, inputs):
+        x = self.embeddings(inputs).mean(axis=1)
+        return self.linear(x)
