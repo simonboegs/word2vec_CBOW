@@ -2,10 +2,21 @@ from torchtext.datasets import WikiText2
 from torchtext.data.utils import get_tokenizer
 from torchtext.vocab import build_vocab_from_iterator
 from torch.utils.data import DataLoader
-from params import DATASET, N_WORDS, MAX_PARAGRAPH_LEN, BATCH_SIZE
+from params import DATASET, N_WORDS, MAX_PARAGRAPH_LEN, BATCH_SIZE, MIN_WORD_FREQ
 from functools import partial
 
 tokenizer = get_tokenizer("basic_english",language="en")
+
+def create_vocab(data_map):
+    data_tokenized = map(tokenizer, data_map)
+    vocab = build_vocab_from_iterator(
+        data_tokenized,
+        specials=["<unk>"],
+        min_freq=MIN_WORD_FREQ
+    )
+    vocab.set_default_index(vocab["<unk>"])
+    torch.save(vocab, "vocab.pth"
+    return vocab
 
 def collate(batch, vocab):
     batch_input, batch_output = [], []
@@ -39,19 +50,12 @@ def create_data_maps(dataset: str):
     test_data_map = to_map_style_dataset(test_data)
     return (train_data_map, test_data_map)
 
-def create_dataloaders(dataset, vocab):
-    train_data_map, test_data_map = create_data_maps(dataset)
-    train_dl = DataLoader(
-        train_data_map,
+def create_dataloader(data_map, vocab):
+    dataloader = DataLoader(
+        data_map,
         batch_size=BATCH_SIZE,
         shuffle=True,
         collate_fn=partial(collate, vocab=vocab)
     )
-    test_dl = DataLoader(
-        test_data_map,
-        batch_size=BATCH_SIZE,
-        shuffle=True,
-        collate_fn=partial(collate, vocab=vocab)
-    )
-    return (train_dl, test_dl)
+    return dataloader
 
