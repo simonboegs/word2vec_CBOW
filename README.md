@@ -6,7 +6,7 @@ https://arxiv.org/pdf/1301.3781.pdf
 ---
 
 ### Step 1. Clone this repository
-`git clone https://github.com/simonboegs/word2vec_CBOW'
+	git clone https://github.com/simonboegs/word2vec_CBOW
 
 ### Step 2. Install requirements
 
@@ -18,7 +18,7 @@ Parameters are adjustable in `params.py'
 4. model training
 
 ### Step 4. Train model
-`python3 train.py`
+	python3 train.py
 Saves model weights in `model_weights.pth`
 Saves embeddings in `embeddings.pth`
 Will 
