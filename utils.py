@@ -1,5 +1,5 @@
 import torch
-from torchtext.datasets import WikiText2
+from torchtext.datasets import WikiText2, WikiText103
 from torchtext.data.utils import get_tokenizer
 from torchtext.vocab import build_vocab_from_iterator
 from torchtext.data import to_map_style_dataset
@@ -47,6 +47,9 @@ def create_data_maps(dataset: str):
     if dataset == "WikiText2":
         train_data = WikiText2(root="data", split="train")
         test_data = WikiText2(root="data", split="test")
+    elif dataset == "WikiText103":
+        train_data = WikiText103(root="data", split="train")
+        test_data = WikiText103(root="data", split="test")
     else:
         raise ValueError("unknown dataset " + DATASET)
     train_data_map = to_map_style_dataset(train_data)

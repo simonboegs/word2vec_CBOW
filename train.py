@@ -3,12 +3,13 @@ import torch
 import torch.nn as nn
 from model import CBOW_Model
 from utils import create_dataloader, create_vocab, create_data_maps
-from params import DATASET, EPOCHS, LR, BATCH_SIZE
+from params import DATASET, EPOCHS, LR, BATCH_SIZE, VOCAB_SAVE, WEIGHTS_SAVE, EMBEDDINGS_SAVE
 import argparse
 
 
 def train(model, loss_fn, optimizer, train_dl, test_dl, epochs, scheduler=None):
     print(f"training started - epochs: {epochs}, batch_size: {BATCH_SIZE}, LR: {LR}")
+    print_interval = 50 
     for epoch in range(epochs):
         print(f"epoch #{epoch+1}") 
         running_loss = 0.0
@@ -21,8 +22,8 @@ def train(model, loss_fn, optimizer, train_dl, test_dl, epochs, scheduler=None):
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
-            if i % 10 == 9:
-                last_loss = running_loss / 10
+            if i % print_interval == print_interval-1:
+                last_loss = running_loss / print_interval
                 print(f"batch {i+1}/{len(train_dl)} loss: {last_loss}")
                 running_loss = 0
         if scheduler is not None:
@@ -32,12 +33,15 @@ def train(model, loss_fn, optimizer, train_dl, test_dl, epochs, scheduler=None):
     embeddings = nn.functional.normalize(embeddings_raw)
     torch.save(embeddings, "saves/embeddings.pth")
     print("training finished")
-    print("embeddings saved")
+    print("weights saved in " + WEIGHTS_SAVE)
+    print("embeddings saved in " + EMBEDDINGS_SAVE)
 
 if __name__ == "__main__":
     train_data, test_data = create_data_maps(DATASET)
+    print(f"creating vocab from {DATASET}")
     vocab = create_vocab(train_data)
     print(f"created vocab - size: {len(vocab)}")
+    print(f"vocab saved in {VOCAB_SAVE}")
     train_dl = create_dataloader(train_data, vocab)
     test_dl = create_dataloader(test_data, vocab)
     model = CBOW_Model(len(vocab))

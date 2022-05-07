@@ -1,3 +1,9 @@
+# -- SAVE FILES --
+VOCAB_SAVE = "saves/vocab.pth"
+WEIGHTS_SAVE = "saves/model_weights.pth"
+EMBEDDINGS_SAVE = "saves/embeddings.pth"
+
+
 # -- DATA HYPERPARAMETERS --
 DATASET = "WikiText2"
 
@@ -10,7 +16,7 @@ EMBED_MAX_NORM = 1
 MIN_WORD_FREQ = 50
 
 # num of words before/after middle word
-N_WORDS = 5
+N_WORDS = 4
 
 # max number of words in paragraph - no more words in the paragraph after this cutoff are considered
 MAX_PARAGRAPH_LEN = 256

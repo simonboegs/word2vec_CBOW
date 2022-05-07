@@ -9,6 +9,7 @@ https://arxiv.org/pdf/1301.3781.pdf
 ### Step 1. Clone this repository
 
 	git clone https://github.com/simonboegs/word2vec_CBOW
+	cd word2vec_CBOW/
 
 ### Step 2. Install dependancies
 
@@ -16,8 +17,8 @@ https://arxiv.org/pdf/1301.3781.pdf
 
 ### Step 3. Adjust parameters
 
-Parameters are adjustable in `params.py'
-- dataset (`WikiText2`)
+Parameters are adjustable in `params.py`
+- dataset (`WikiText2` or `WikiText103`)
 - vocab construction
 - data processing
 - model training
@@ -30,8 +31,7 @@ Saves vocabulary object, model weights, and embeddings in saves/ folder.
 
 ### Step 5. Use embeddings
 
-	python3 test.py distance word1 word2
-
-	python3 test.py closest word
-
-	python3 test.py farthest word
+	python3 test.py cos-sim word1 word2
+	python3 test.py top word 
+	python3 test.py top word -n 10
+	python3 test.py top word --farthest -n 10
