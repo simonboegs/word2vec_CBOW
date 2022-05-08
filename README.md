@@ -8,12 +8,12 @@ https://arxiv.org/pdf/1301.3781.pdf
 
 ### Step 1. Clone this repository
 
-	git clone https://github.com/simonboegs/word2vec_CBOW
-	cd word2vec_CBOW/
+	$ git clone https://github.com/simonboegs/word2vec_CBOW
+	$ cd word2vec_CBOW/
 
 ### Step 2. Install dependancies
 
-	pip3 install -r requirements.txt
+	$ pip3 install -r requirements.txt
 
 ### Step 3. Adjust parameters
 
@@ -31,7 +31,17 @@ Saves vocabulary object, model weights, and embeddings in saves/ folder.
 
 ### Step 5. Use embeddings
 
-	python3 test.py cos-sim word1 word2
-	python3 test.py top word 
-	python3 test.py top word -n 10
-	python3 test.py top word --farthest -n 10
+	python3 test.py [COMMAND]
+
+Commands:
+- `cos-sim` returns cosine similarity between 2 words
+	python3 test.py cos-sim [word1] [word2]
+
+- `top` returns list of similar words to given word
+	python3 test.py top [word]
+
+	# get closest 10 words
+	python3 test.py top [word] -n 10
+
+	# get farthest 10 words instead
+	python3 test.py top [word] -n 10 --farthest
