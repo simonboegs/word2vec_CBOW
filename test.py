@@ -38,14 +38,6 @@ class Test():
         return words_values
 
 if __name__ == "__main__":
-    '''
-    vocab = torch.load("vocab.pth")
-    embeddings = torch.load("embeddings.pth")
-    dist = distance("mother","father")
-    # print(dist)
-    top = top_n("mother", closest=True)
-    print(top)
-    '''
 
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(required=True, dest="command",help="command")

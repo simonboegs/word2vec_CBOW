@@ -4,12 +4,13 @@ from torchtext.data.utils import get_tokenizer
 from torchtext.vocab import build_vocab_from_iterator
 from torchtext.data import to_map_style_dataset
 from torch.utils.data import DataLoader
-from params import DATASET, N_WORDS, MAX_PARAGRAPH_LEN, BATCH_SIZE, MIN_WORD_FREQ
+from params import VOCAB_SAVE, DATASET, N_WORDS, MAX_PARAGRAPH_LEN, BATCH_SIZE, MIN_WORD_FREQ
 from functools import partial
 
 tokenizer = get_tokenizer("basic_english",language="en")
 
 def create_vocab(data_map):
+    print(f"creating vocab from {DATSET}...")
     data_tokenized = map(tokenizer, data_map)
     vocab = build_vocab_from_iterator(
         data_tokenized,
@@ -17,7 +18,8 @@ def create_vocab(data_map):
         min_freq=MIN_WORD_FREQ
     )
     vocab.set_default_index(vocab["<unk>"])
-    torch.save(vocab, "saves/vocab.pth")
+    torch.save(vocab, VOCAB_SAVE)
+    print(f"created vocab. size: {len(vocab)}. saved -> {VOCAB_SAVE}")
     return vocab
 
 def collate(batch, vocab):
