@@ -30,18 +30,18 @@ Parameters are adjustable in `params.py`
 Saves vocabulary object, model weights, and embeddings in saves/ folder.
 
 ### Step 5. Use embeddings
+Similarity between words is measured by cosine similarity.
+```
+$ python3 test.py [COMMAND]
 
-	python3 test.py [COMMAND]
+# cosine similarity between 2 words
+$ python3 test.py cos-sim [word1] [word2]
 
-Commands:
-- `cos-sim` returns cosine similarity between 2 words
-	python3 test.py cos-sim [word1] [word2]
+# top n similar words
+$ python3 test.py top [word]
 
-- `top` returns list of similar words to given word
-	python3 test.py top [word]
-
-	# get closest 10 words
-	python3 test.py top [word] -n 10
-
-	# get farthest 10 words instead
-	python3 test.py top [word] -n 10 --farthest
+# Optional arguments:
+	# -n [N]       size of list
+	# --farthest   get least similar words instead
+$ python3 test.py [word] -n 10 --farthest
+```
